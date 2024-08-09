@@ -1,0 +1,24 @@
+.RadialMenu {
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.RadialMenuCrust {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.RadialMenuPie {
+    /* width: 400px;
+    height: 400px; */
+    position: absolute;
+    border-radius: 50%;
+}
+
+.RadialMenuCore {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+}
