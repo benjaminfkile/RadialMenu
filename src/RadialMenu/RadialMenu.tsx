@@ -36,7 +36,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
     const innerRadius = innerDiameter / 2
     const iconRadius = innerRadius * 0.7
     const lowerTextRadius = radius - 33.33 // 50 pixels inward
-    const upperTextRadius = radius -30
+    const upperTextRadius = radius - 30
     const segmentAngle = 360 / items.length
     const wheelOffset = items.length > 3 ? -(diameter / items.length) / 3 : -segmentAngle / 2
 
@@ -54,6 +54,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                 height: `${diameter}px`,
                 transform: `rotate(${wheelOffset}deg)`
             }}
+            onMouseLeave={() => handleHover(-1)}
         >
             <div className="RadialMenuCrust">
                 <svg
@@ -70,7 +71,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                         const dTextPath = isUpsideDown
                             ? `M${radius + lowerTextRadius * Math.cos(endAngle)},${radius + lowerTextRadius * Math.sin(endAngle)} A${lowerTextRadius},${lowerTextRadius} 0 0,0 ${radius + lowerTextRadius * Math.cos(startAngle)},${radius + lowerTextRadius * Math.sin(startAngle)}`
                             : `M${radius + upperTextRadius * Math.cos(startAngle)},${radius + upperTextRadius * Math.sin(startAngle)} A${upperTextRadius},${upperTextRadius} 0 0,1 ${radius + upperTextRadius * Math.cos(endAngle)},${radius + upperTextRadius * Math.sin(endAngle)}`;
-                        
+
 
                         const fill = hoverDex === index ? "#dc3545" : "#eaeaea"
 
@@ -79,7 +80,6 @@ const RadialMenu: FunctionComponent<Props> = () => {
                                 key={index}
                                 onClick={item.callback}
                                 onMouseEnter={() => handleHover(index)}
-                                onMouseLeave={() => handleHover(-1)}
                             >
                                 <path
                                     id={`path-${index}`}
@@ -106,6 +106,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                                     <textPath
                                         xlinkHref={`#text-path-${index}`}
                                         startOffset="50%"
+
                                     >
                                         {item.title}
                                     </textPath>
@@ -135,7 +136,6 @@ const RadialMenu: FunctionComponent<Props> = () => {
                         return (
                             <g key={index} onClick={item.callback}
                                 onMouseEnter={() => handleHover(index)}
-                                onMouseLeave={() => handleHover(-1)}
                             >
                                 <path
                                     d={`M${innerRadius},${innerRadius} L${innerRadius + innerRadius * Math.cos((angleDeg - segmentAngle / 2) * Math.PI / 180)},${innerRadius + innerRadius * Math.sin((angleDeg - segmentAngle / 2) * Math.PI / 180)} A${innerRadius},${innerRadius} 0 0,1 ${innerRadius + innerRadius * Math.cos((angleDeg + segmentAngle / 2) * Math.PI / 180)},${innerRadius + innerRadius * Math.sin((angleDeg + segmentAngle / 2) * Math.PI / 180)} Z`}
@@ -165,6 +165,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
             </div>
             <div
                 className="RadialMenuCore"
+                onMouseEnter={() => handleHover(-1)}
                 style={{
                     width: `${radius / 2}px`,
                     height: `${radius / 2}px`,
