@@ -1,22 +1,18 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react";
 import "./RadialMenu.css";
+import MenuItem from "./Interfaces/MenuItem";
 
-interface Props { }
+interface Props {
+    diameter: number
+    coreIcon: string
+    slices: MenuItem[]
+}
 
-const items = [
-    { title: "User Administration", icon: "admin_panel_settings", callback: () => console.log("User Administration") },
-    { title: "bar", icon: "settings", callback: () => console.log("settings") },
-    { title: "baz", icon: "face", callback: () => console.log("face") },
-    { title: "moo", icon: "pets", callback: () => console.log("pets") },
-    { title: "foo2", icon: "lightbulb", callback: () => console.log("lightbulb") },
-    { title: "bar2", icon: "star", callback: () => console.log("star") },
-    { title: "baz2", icon: "visibility", callback: () => console.log("visibility") },
-    { title: "moo2", icon: "shopping_cart", callback: () => console.log("shopping_cart") },
-];
+const RadialMenu: FunctionComponent<Props> = (props) => {
 
-const RadialMenu: FunctionComponent<Props> = () => {
+    const { coreIcon, slices, diameter } = props
+
     const [hoverDex, setHoverDex] = useState(-1);
-    const diameter = 500;
     const svgPieRef = useRef<SVGSVGElement>(null);
     const svgCoreRef = useRef<SVGSVGElement>(null);
 
@@ -28,8 +24,8 @@ const RadialMenu: FunctionComponent<Props> = () => {
     const iconRadius = innerRadius * 0.7;
     const lowerTextRadius = radius - 33.33;
     const upperTextRadius = radius - 30;
-    const segmentAngle = 360 / items.length;
-    const wheelOffset = items.length > 3 ? -(diameter / items.length) / 3 : -segmentAngle / 2;
+    const segmentAngle = 360 / slices.length;
+    const wheelOffset = slices.length > 3 ? -(diameter / slices.length) / 3 : -segmentAngle / 2;
 
     const handleMouseMove = (event: MouseEvent) => {
         if (!svgPieRef.current || !svgCoreRef.current) return;
@@ -53,7 +49,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
 
         let foundSegment = -1;
 
-        items.forEach((_, index) => {
+        slices.forEach((_, index) => {
             //@ts-ignore
             const path = document.getElementById(`path-${index}`) as SVGGeometryElement;
             if (path.isPointInFill(cursorPoint)) {
@@ -62,6 +58,12 @@ const RadialMenu: FunctionComponent<Props> = () => {
         });
 
         setHoverDex(foundSegment);
+    };
+
+    const handleClick = () => {
+        if (hoverDex > -1) {
+            slices[hoverDex].callback()
+        }
     };
 
     useEffect(() => {
@@ -80,6 +82,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                 transform: `rotate(${wheelOffset}deg)`,
                 position: "relative",
             }}
+            onClick={() => handleClick()}
         >
             <div className="RadialMenuCrust" onMouseLeave={() => setHoverDex(-1)}>
                 <svg
@@ -88,7 +91,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                     height={`${diameter}px`}
                     viewBox={`0 0 ${diameter} ${diameter}`}
                 >
-                    {items.map((item, index) => {
+                    {slices.map((item, index) => {
                         const angleDeg = index * segmentAngle + segmentAngle / 2 - 90;
                         const startAngle = (angleDeg - segmentAngle / 2) * Math.PI / 180;
                         const endAngle = (angleDeg + segmentAngle / 2) * Math.PI / 180;
@@ -103,7 +106,6 @@ const RadialMenu: FunctionComponent<Props> = () => {
                         return (
                             <g
                                 key={index}
-                                onClick={item.callback}
                             >
                                 <path
                                     id={`path-${index}`}
@@ -120,6 +122,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                                 />
                                 <text
                                     fontSize="18"
+                                    fontWeight={500}
                                     fill="black"
                                     textAnchor="middle"
                                     dominantBaseline={isUpsideDown ? "hanging" : "middle"}
@@ -148,7 +151,7 @@ const RadialMenu: FunctionComponent<Props> = () => {
                     height={`${innerDiameter}px`}
                     viewBox={`0 0 ${innerDiameter} ${innerDiameter}`}
                 >
-                    {items.map((item, index) => {
+                    {slices.map((item, index) => {
                         const angleDeg = index * segmentAngle + segmentAngle / 2 - 90;
                         const iconAngle = angleDeg * Math.PI / 180;
                         const fill = hoverDex === index ? hoverFill : "#eaeaea";
@@ -156,7 +159,6 @@ const RadialMenu: FunctionComponent<Props> = () => {
                         return (
                             <g
                                 key={index}
-                                onClick={item.callback}
                             >
                                 <path
                                     d={`M${innerRadius},${innerRadius} L${innerRadius + innerRadius * Math.cos((angleDeg - segmentAngle / 2) * Math.PI / 180)},${innerRadius + innerRadius * Math.sin((angleDeg - segmentAngle / 2) * Math.PI / 180)} A${innerRadius},${innerRadius} 0 0,1 ${innerRadius + innerRadius * Math.cos((angleDeg + segmentAngle / 2) * Math.PI / 180)},${innerRadius + innerRadius * Math.sin((angleDeg + segmentAngle / 2) * Math.PI / 180)} Z`}
@@ -165,15 +167,15 @@ const RadialMenu: FunctionComponent<Props> = () => {
                                     strokeWidth="2"
                                 />
                                 <foreignObject
-                                    x={(innerRadius + iconRadius * Math.cos(iconAngle)) - 24}
-                                    y={(innerRadius + iconRadius * Math.sin(iconAngle)) - 24}
-                                    width="48px"
-                                    height="48px"
+                                    x={(innerRadius + iconRadius * Math.cos(iconAngle)) - (innerRadius / 4) / 2}
+                                    y={(innerRadius + iconRadius * Math.sin(iconAngle)) - (innerRadius / 4) / 2}
+                                    width={`${(innerRadius / 4)}`}
+                                    height={`${(innerRadius / 4)}`}
                                 >
                                     <span
                                         className="material-icons"
                                         style={{
-                                            fontSize: "48px",
+                                            fontSize: `${(innerRadius / 4)}px`,
                                             transform: `rotate(${-wheelOffset}deg)`,
                                         }}
                                     >
@@ -210,23 +212,24 @@ const RadialMenu: FunctionComponent<Props> = () => {
                 />
                 <foreignObject
                     id="safdasdfasf"
-                    x={radius - radius / 4}  // Center by subtracting half of the core's radius
-                    y={radius - radius / 4}  // Center by subtracting half of the core's radius
-                    width={radius / 2}       // Set width to the core's diameter
-                    height={radius / 2}      // Set height to the core's diameter
+                    x={radius - radius / 4}
+                    y={radius - radius / 4}
+                    width={radius / 2}
+                    height={radius / 2}
                 >
                     <span
                         className="material-icons"
                         style={{
-                            fontSize: `${radius / 2}px`,  // Set the font size to match the core's diameter
-                            display: "block",             // Make the span fill the foreignObject
-                            width: "100%",                // Ensure the span fills the width
-                            height: "100%",               // Ensure the span fills the height
-                            textAlign: "center",          // Center the icon horizontally
-                            lineHeight: `${radius / 2}px`, // Center the icon vertically
+                            fontSize: `${radius / 2}px`,
+                            display: "block",
+                            width: "100%",
+                            height: "100%",
+                            textAlign: "center",
+                            lineHeight: `${radius / 2}px`,
+                            transform: `rotate(${-wheelOffset}deg)`,
                         }}
                     >
-                        settings
+                        {coreIcon}
                     </span>
                 </foreignObject>
             </svg>
