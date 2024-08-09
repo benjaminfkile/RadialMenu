@@ -1,7 +1,7 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react";
 import "./RadialMenu.css";
 
-interface Props {}
+interface Props { }
 
 const items = [
     { title: "User Administration", icon: "admin_panel_settings", callback: () => console.log("User Administration") },
@@ -17,7 +17,8 @@ const items = [
 const RadialMenu: FunctionComponent<Props> = () => {
     const [hoverDex, setHoverDex] = useState(-1);
     const diameter = 500;
-    const svgRef = useRef<SVGSVGElement>(null);
+    const svgPieRef = useRef<SVGSVGElement>(null);
+    const svgCoreRef = useRef<SVGSVGElement>(null);
 
     const hoverFill = "#dc3545";
 
@@ -31,14 +32,24 @@ const RadialMenu: FunctionComponent<Props> = () => {
     const wheelOffset = items.length > 3 ? -(diameter / items.length) / 3 : -segmentAngle / 2;
 
     const handleMouseMove = (event: MouseEvent) => {
-        if (!svgRef.current) return;
+        if (!svgPieRef.current || !svgCoreRef.current) return;
 
-        const svg = svgRef.current;
+        const svg = svgPieRef.current;
         const point = svg.createSVGPoint();
         point.x = event.clientX;
         point.y = event.clientY;
 
         const cursorPoint = point.matrixTransform(svg.getScreenCTM()?.inverse());
+
+        const dx = cursorPoint.x - radius;
+        const dy = cursorPoint.y - radius;
+        const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
+
+        // Check if the cursor is inside the core circle
+        if (distanceFromCenter <= radius / 4) {
+            setHoverDex(-1);
+            return;
+        }
 
         let foundSegment = -1;
 
@@ -55,7 +66,9 @@ const RadialMenu: FunctionComponent<Props> = () => {
 
     useEffect(() => {
         document.addEventListener("mousemove", handleMouseMove);
-        return () => document.removeEventListener("mousemove", handleMouseMove);
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+        };
     }, []);
 
     return (
@@ -65,11 +78,12 @@ const RadialMenu: FunctionComponent<Props> = () => {
                 width: `${diameter}px`,
                 height: `${diameter}px`,
                 transform: `rotate(${wheelOffset}deg)`,
+                position: "relative",
             }}
         >
             <div className="RadialMenuCrust" onMouseLeave={() => setHoverDex(-1)}>
                 <svg
-                    ref={svgRef}
+                    ref={svgPieRef}
                     width={`${diameter}px`}
                     height={`${diameter}px`}
                     viewBox={`0 0 ${diameter} ${diameter}`}
@@ -171,6 +185,52 @@ const RadialMenu: FunctionComponent<Props> = () => {
                     })}
                 </svg>
             </div>
+            <svg
+                id="cb2e6dad4cda41bca879ab6cac9c053d"
+                ref={svgCoreRef}
+                width={`${diameter}px`}
+                height={`${diameter}px`}
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                }}
+                viewBox={`0 0 ${diameter} ${diameter}`}
+            >
+                <path
+                    d={`
+            M ${radius},${radius}
+            m -${radius / 4}, 0
+            a ${radius / 4},${radius / 4} 0 1,0 ${radius / 2},0
+            a ${radius / 4},${radius / 4} 0 1,0 -${radius / 2},0
+        `}
+                    fill={"#FFFFFF"}
+                    stroke="black"
+                    strokeWidth="2"
+                />
+                <foreignObject
+                    id="safdasdfasf"
+                    x={radius - radius / 4}  // Center by subtracting half of the core's radius
+                    y={radius - radius / 4}  // Center by subtracting half of the core's radius
+                    width={radius / 2}       // Set width to the core's diameter
+                    height={radius / 2}      // Set height to the core's diameter
+                >
+                    <span
+                        className="material-icons"
+                        style={{
+                            fontSize: `${radius / 2}px`,  // Set the font size to match the core's diameter
+                            display: "block",             // Make the span fill the foreignObject
+                            width: "100%",                // Ensure the span fills the width
+                            height: "100%",               // Ensure the span fills the height
+                            textAlign: "center",          // Center the icon horizontally
+                            lineHeight: `${radius / 2}px`, // Center the icon vertically
+                        }}
+                    >
+                        settings
+                    </span>
+                </foreignObject>
+            </svg>
+
         </div>
     );
 };
