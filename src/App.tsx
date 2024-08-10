@@ -2,15 +2,13 @@ import RadialMenu from './RadialMenu/RadialMenu';
 import './App.css';
 
 const slices = [
-  { title: "bar", icon: "settings", callback: () => console.log("settings") },
-  { title: "baz", icon: "face", callback: () => console.log("face") },
-  { title: "foo2", icon: "lightbulb", callback: () => console.log("lightbulb") },
-  { title: "bar2", icon: "star", callback: () => console.log("star") },
-  { title: "baz2", icon: "visibility", callback: () => console.log("visibility") },
-  { title: "moo2", icon: "shopping_cart", callback: () => console.log("shopping_cart") },
-  { title: "bar", icon: "settings", callback: () => console.log("settings") },
-  { title: "baz", icon: "face", callback: () => console.log("face") },
-  { title: "moo", icon: "pets", callback: () => foo() },
+  { title: "User Administration", icon: "admin_panel_settings", callback: () => console.log("user admin") },
+  { title: "Workers Comp", icon: "personal_injury", callback: () => console.log("work comp") },
+  { title: "Reviews", icon: "grading", callback: () => console.log("reviews") },
+  { title: "PTO", icon: "access_time", callback: () => console.log("pto") },
+  { title: "Tasks", icon: "task", callback: () => console.log("tasks") },
+  { title: "Roles", icon: "key", callback: () => console.log("roles") },
+  { title: "User Access", icon: "lock", callback: () => console.log("user access") },
 ];
 
 const foo = () => {
@@ -21,7 +19,7 @@ function App() {
   return (
     <div className="App">
       <RadialMenu
-        diameter={400}
+        diameter={430}
         coreIcon={"account_circle"}
         slices={slices}
       />

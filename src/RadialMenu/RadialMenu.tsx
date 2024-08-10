@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react";
-import "./RadialMenu.css";
 import MenuItem from "./Interfaces/MenuItem";
+import "./RadialMenu.css";
 
 interface Props {
     diameter: number
@@ -18,14 +18,14 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
 
     const hoverFill = "#dc3545";
 
-    const innerDiameter = diameter - 100;
+    const innerDiameter = diameter - 60;
     const radius = diameter / 2;
     const innerRadius = innerDiameter / 2;
     const iconRadius = innerRadius * 0.7;
-    const lowerTextRadius = radius - 33.33;
-    const upperTextRadius = radius - 30;
+    const lowerTextRadius = radius - 25;
+    const upperTextRadius = radius - 18;
     const segmentAngle = 360 / slices.length;
-    const wheelOffset = slices.length > 3 ? -(diameter / slices.length) / 3 : -segmentAngle / 2;
+    const wheelOffset = -segmentAngle / 2;
 
     const handleMouseMove = (event: MouseEvent) => {
         if (!svgPieRef.current || !svgCoreRef.current) return;
@@ -52,8 +52,10 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
         slices.forEach((_, index) => {
             //@ts-ignore
             const path = document.getElementById(`path-${index}`) as SVGGeometryElement;
-            if (path.isPointInFill(cursorPoint)) {
-                foundSegment = index;
+            if (path) {
+                if (path.isPointInFill(cursorPoint)) {
+                    foundSegment = index;
+                }
             }
         });
 
