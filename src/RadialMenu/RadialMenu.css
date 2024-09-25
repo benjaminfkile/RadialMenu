@@ -5,14 +5,7 @@
     border-radius: 50%;
 }
 
-.RadialMenuCrust {
-    position: absolute;
-    border-radius: 50%;
-}
-
-.RadialMenuPie {
-    /* width: 400px;
-    height: 400px; */
+.RadialMenuCrust, .RadialMenuPie {
     position: absolute;
     border-radius: 50%;
 }
@@ -23,6 +16,10 @@
     background-color: #FFFFFF;
 }
 
-#safdasdfasf{
+#ec891295d8fe464eb77d3989a2222cc9{
     border-radius: 50%;
+}
+
+.RadialMenuError{
+    color: #ff0000;
 }
