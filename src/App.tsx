@@ -1,5 +1,5 @@
 import RadialMenu from "./RadialMenu/RadialMenu"
-import I_MenuItem from "./RadialMenu/interfaces/I_MenuItem"
+import I_MenuItem from "./RadialMenu/Interfaces/I_MenuItem"
 import "./App.css"
 
 const slices = [

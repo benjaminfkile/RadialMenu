@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react"
-import I_MenuItem from "./interfaces/I_MenuItem"
+import I_MenuItem from "./Interfaces/I_MenuItem"
 import "material-icons/iconfont/material-icons.css"
 import "./RadialMenu.css"
 
