@@ -1,5 +1,5 @@
-import RadialMenu from './RadialMenu/RadialMenu'
-import I_MenuItem from './RadialMenu/interfaces/I_MenuItem'
+import RadialMenu from "./RadialMenu/RadialMenu"
+import I_MenuItem from "./RadialMenu/interfaces/I_MenuItem"
 
 const slices = [
   // { title: "Administration", icon: "admin_panel_settings", color: "#3F5B2A", callback: () => console.log("user admin") },
@@ -26,13 +26,13 @@ function App() {
         coreIcon={"account_circle"}
         slices={slices}
         hoverFill="gray"
-        backgroundColor='#000000'
-        coreBackgroundColor='green'
-        iconType='sharp'
+        backgroundColor="#000000"
+        coreBackgroundColor="green"
+        iconType="sharp"
         fontWeight={800}
-        coreIconColor='gray'
-        strokeColor='green'
-        textColor='green'
+        coreIconColor="gray"
+        strokeColor="green"
+        textColor="green"
       />
     </div>
   )

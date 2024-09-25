@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react"
 import I_MenuItem from "./interfaces/I_MenuItem"
-import 'material-icons/iconfont/material-icons.css'
+import "material-icons/iconfont/material-icons.css"
 import "./RadialMenu.css"
 
 interface Props {
@@ -116,7 +116,7 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
         return () => {
             document.removeEventListener("mousemove", handleMouseMove)
         }
-    }, [])
+    })
 
     return (
         <>
