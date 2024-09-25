@@ -11,7 +11,6 @@ interface Props {
     coreBackgroundColor?: string
     strokeColor?: string
     hoverFill: string
-    fontFamily?: string
     iconType?: "outlined" | "sharp" | "two-tone"
     fontWeight?: number
     coreIconColor?: string
@@ -26,7 +25,6 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
         diameter,
         backgroundColor,
         hoverFill,
-        fontFamily,
         iconType,
         strokeColor,
         coreBackgroundColor,
@@ -128,7 +126,6 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
                         height: `${diameter}px`,
                         transform: `rotate(${wheelOffset}deg)`,
                         position: "relative",
-                        fontFamily: `${fontFamily ? fontFamily : "Arial, sans-serif"}`,
                     }}
                     onClick={() => handleClick()}
                 >

@@ -1,5 +1,6 @@
 import RadialMenu from "./RadialMenu/RadialMenu"
 import I_MenuItem from "./RadialMenu/interfaces/I_MenuItem"
+import "./App.css"
 
 const slices = [
   // { title: "Administration", icon: "admin_panel_settings", color: "#3F5B2A", callback: () => console.log("user admin") },
