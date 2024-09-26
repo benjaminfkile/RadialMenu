@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect, useRef } from "react"
 import I_MenuItem from "./Interfaces/I_MenuItem"
-import "material-icons/iconfont/material-icons.css"
 import "./RadialMenu.css"
 
 interface Props {
@@ -11,7 +10,7 @@ interface Props {
     coreBackgroundColor?: string
     strokeColor?: string
     hoverFill: string
-    iconType?: "outlined" | "sharp" | "two-tone"
+    iconType?: "outlined" | "sharp" | "rounded"
     fontWeight?: number
     coreIconColor?: string
     textColor?: string
@@ -53,20 +52,21 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
     const fw = fontWeight ? fontWeight : 600
     const cio = coreIconColor ? coreIconColor : "#000000"
     const tc = textColor ? textColor : "#000000"
+    const it = iconType ? iconType : "outlined"
 
     useEffect(() => {
-
-        if (iconType === "two-tone") {
-            const conflictingSlice = slices.find((slice) => slice.color)
-            if (conflictingSlice) {
-                setError("Two-tone icons do not support custom colors. Please remove color properties from slices or use something other than two-tone.")
-            } else {
-                setError(null)
-            }
-        } else {
-            setError(null)
+        const href = `https://fonts.googleapis.com/css2?family=Material+Symbols+${it.charAt(0).toUpperCase() + it.slice(1)}`
+        const existingLink = document.querySelector(`link[href="${href}"]`);
+        if (!existingLink) {
+            console.log("creating link")
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = href
+            document.head.appendChild(link);
         }
-    }, [iconType, slices])
+
+    }, [iconType, slices]);
+
 
     const handleMouseMove = (event: MouseEvent) => {
         if (!svgPieRef.current || !svgCoreRef.current) return
@@ -221,7 +221,7 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
                                             height={`${(innerRadius / 4)}`}
                                         >
                                             <span
-                                                className={`material-icons-${iconType ? iconType : "outlined"}`}
+                                                className={`material-symbols-${iconType ? iconType : "outlined"}`}
                                                 style={{
                                                     fontSize: `${(innerRadius / 4)}px`,
                                                     transform: `rotate(${-wheelOffset}deg)`,
@@ -267,7 +267,7 @@ const RadialMenu: FunctionComponent<Props> = (props) => {
                             height={radius / 2}
                         >
                             <span
-                                className={`material-icons-${iconType ? iconType : "outlined"}`}
+                                className={`material-symbols-${iconType ? iconType : "outlined"}`}
                                 style={{
                                     fontSize: `${radius / 2}px`,
                                     display: "block",
